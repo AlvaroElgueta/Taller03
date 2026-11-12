@@ -24,7 +24,11 @@ Taller03/
 |   |-- module-info.java
 |   `-- Taller03/
 |       |-- Main.java
-|       `-- Monstruo.java
+|       |-- Monstruo.java
+|       |-- Mordedor.java
+|       |-- Volador.java
+|       |-- Regenerable.java
+|       `-- Furioso.java
 |-- Monstruos.txt
 |-- Registros.txt
 `-- README.md
