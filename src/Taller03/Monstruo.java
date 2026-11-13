@@ -45,4 +45,6 @@ public abstract class Monstruo {
 	public void setResistencia(int resistencia) {
 		this.resistencia = resistencia;
 	}
+
+	public abstract String getTipo();
 }

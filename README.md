@@ -25,6 +25,8 @@ Taller03/
 |   `-- Taller03/
 |       |-- Main.java
 |       |-- Monstruo.java
+|       |-- Zombi.java
+|       |-- Vampiro.java
 |       |-- Mordedor.java
 |       |-- Volador.java
 |       |-- Regenerable.java
