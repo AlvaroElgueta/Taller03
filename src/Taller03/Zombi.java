@@ -31,4 +31,24 @@ public class Zombi extends Monstruo implements Mordedor, Regenerable {
 	public String regenerarse() {
 		return "El zombi regenera sus heridas";
 	}
+
+	@Override
+	public double calcularCarrera() {
+		return (double) getVelocidad() * getResistencia() / 100;
+	}
+
+	@Override
+	public double calcularCaza() {
+		return (double) fuerzaDeMordida * getVida() / 100 + (double) getResistencia() / 2;
+	}
+
+	@Override
+	public double calcularLanzamiento() {
+		return (double) getFuerza() * getResistencia() / 100;
+	}
+
+	@Override
+	public double calcularAmanecer() {
+		return (double) getResistencia() * getVida() / 100;
+	}
 }

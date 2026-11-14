@@ -27,6 +27,8 @@ Taller03/
 |       |-- Monstruo.java
 |       |-- Zombi.java
 |       |-- Vampiro.java
+|       |-- Momia.java
+|       |-- HombreLobo.java
 |       |-- Mordedor.java
 |       |-- Volador.java
 |       |-- Regenerable.java

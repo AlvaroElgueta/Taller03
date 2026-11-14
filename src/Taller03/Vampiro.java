@@ -42,4 +42,24 @@ public class Vampiro extends Monstruo implements Mordedor, Volador {
 	public String volar() {
 		return "El vampiro comienza a volar";
 	}
+
+	@Override
+	public double calcularCarrera() {
+		return (getVelocidad() + 2.0 * velocidadDeVuelo) / 2;
+	}
+
+	@Override
+	public double calcularCaza() {
+		return (double) (getFuerza() + getVelocidad()) / 3;
+	}
+
+	@Override
+	public double calcularLanzamiento() {
+		return getFuerza() + (double) velocidadDeVuelo / 4;
+	}
+
+	@Override
+	public double calcularAmanecer() {
+		return (double) getResistencia() * resistenciaAlSol / 100;
+	}
 }

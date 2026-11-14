@@ -47,4 +47,12 @@ public abstract class Monstruo {
 	}
 
 	public abstract String getTipo();
+
+	public abstract double calcularCarrera();
+
+	public abstract double calcularCaza();
+
+	public abstract double calcularLanzamiento();
+
+	public abstract double calcularAmanecer();
 }
