@@ -32,7 +32,12 @@ Taller03/
 |       |-- Mordedor.java
 |       |-- Volador.java
 |       |-- Regenerable.java
-|       `-- Furioso.java
+|       |-- Furioso.java
+|       |-- Minijuego.java
+|       |-- CarreraCementerio.java
+|       |-- CazaCalabazas.java
+|       |-- LanzamientoLapidas.java
+|       `-- SobrevivirAmanecer.java
 |-- Monstruos.txt
 |-- Registros.txt
 `-- README.md
