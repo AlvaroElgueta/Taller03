@@ -37,7 +37,10 @@ Taller03/
 |       |-- CarreraCementerio.java
 |       |-- CazaCalabazas.java
 |       |-- LanzamientoLapidas.java
-|       `-- SobrevivirAmanecer.java
+|       |-- SobrevivirAmanecer.java
+|       |-- Jugador.java
+|       |-- ResultadoMinijuego.java
+|       `-- Sistema.java
 |-- Monstruos.txt
 |-- Registros.txt
 `-- README.md
