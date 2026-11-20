@@ -48,6 +48,13 @@ public abstract class Monstruo {
 
 	public abstract String getTipo();
 
+	protected String getInformacionBase() {
+		return "Vida: " + vida + " | Velocidad: " + velocidad + " | Fuerza: "
+				+ fuerza + " | Resistencia: " + resistencia;
+	}
+
+	public abstract String getInformacion();
+
 	public abstract double calcularCarrera();
 
 	public abstract double calcularCaza();

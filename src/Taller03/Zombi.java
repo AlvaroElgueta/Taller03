@@ -23,6 +23,12 @@ public class Zombi extends Monstruo implements Mordedor, Regenerable {
 	}
 
 	@Override
+	public String getInformacion() {
+		return getTipo() + " | " + getInformacionBase() + " | Fuerza de mordida: "
+				+ fuerzaDeMordida;
+	}
+
+	@Override
 	public String morder() {
 		return "El zombi muerde con fuerza";
 	}

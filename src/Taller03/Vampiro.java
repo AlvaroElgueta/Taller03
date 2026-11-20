@@ -34,6 +34,12 @@ public class Vampiro extends Monstruo implements Mordedor, Volador {
 	}
 
 	@Override
+	public String getInformacion() {
+		return getTipo() + " | " + getInformacionBase() + " | Velocidad de vuelo: "
+				+ velocidadDeVuelo + " | Resistencia al sol: " + resistenciaAlSol;
+	}
+
+	@Override
 	public String morder() {
 		return "El vampiro utiliza sus colmillos";
 	}

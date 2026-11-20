@@ -9,12 +9,19 @@ public class Sistema {
 	private ArrayList<Jugador> jugadores;
 	private ArrayList<Minijuego> minijuegos;
 	private LinkedList<ResultadoMinijuego> historial;
+	private ArrayList<Monstruo> monstruosUsados;
+	private ArrayList<Minijuego> minijuegosJugados;
+	private String nombreJugadorActual;
+	private Jugador jugadorActual;
+	private int puntajeSesion;
 
 	public Sistema() {
 		monstruos = new ArrayList<>();
 		jugadores = new ArrayList<>();
 		minijuegos = new ArrayList<>();
 		historial = new LinkedList<>();
+		monstruosUsados = new ArrayList<>();
+		minijuegosJugados = new ArrayList<>();
 		minijuegos.add(new CarreraCementerio());
 		minijuegos.add(new CazaCalabazas());
 		minijuegos.add(new LanzamientoLapidas());
@@ -35,6 +42,64 @@ public class Sistema {
 
 	public LinkedList<ResultadoMinijuego> getHistorial() {
 		return historial;
+	}
+
+	public String getNombreJugadorActual() {
+		return nombreJugadorActual;
+	}
+
+	public Jugador getJugadorActual() {
+		return jugadorActual;
+	}
+
+	public int getPuntajeSesion() {
+		return puntajeSesion;
+	}
+
+	//inicia una sesion y reinicia sus datos
+	public boolean iniciarSesion(String nombre) {
+		if (nombre == null || nombre.trim().equalsIgnoreCase("") || nombre.contains(";")) {
+			return false;
+		}
+		nombreJugadorActual = nombre.trim();
+		jugadorActual = buscarJugador(nombreJugadorActual);
+		puntajeSesion = 0;
+		historial.clear();
+		monstruosUsados.clear();
+		minijuegosJugados.clear();
+		return true;
+	}
+
+	public boolean monstruoUsado(Monstruo monstruo) {
+		return monstruosUsados.contains(monstruo);
+	}
+
+	public boolean minijuegoJugado(Minijuego minijuego) {
+		return minijuegosJugados.contains(minijuego);
+	}
+
+	//retorna una copia de los jugadores ordenada por puntaje y nombre
+	public ArrayList<Jugador> obtenerRanking() {
+		ArrayList<Jugador> ranking = new ArrayList<>();
+		for (int i = 0; i < jugadores.size(); i++) {
+			ranking.add(jugadores.get(i));
+		}
+		for (int i = 0; i < ranking.size() - 1; i++) {
+			for (int j = 0; j < ranking.size() - 1 - i; j++) {
+				Jugador actual = ranking.get(j);
+				Jugador siguiente = ranking.get(j + 1);
+				boolean cambiar = actual.getPuntajeMaximo() < siguiente.getPuntajeMaximo();
+				if (actual.getPuntajeMaximo() == siguiente.getPuntajeMaximo()
+						&& actual.getNombre().compareToIgnoreCase(siguiente.getNombre()) > 0) {
+					cambiar = true;
+				}
+				if (cambiar) {
+					ranking.set(j, siguiente);
+					ranking.set(j + 1, actual);
+				}
+			}
+		}
+		return ranking;
 	}
 
 	//valida los datos y agrega un monstruo a la lista

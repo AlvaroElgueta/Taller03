@@ -34,6 +34,12 @@ public class HombreLobo extends Monstruo implements Mordedor, Furioso {
 	}
 
 	@Override
+	public String getInformacion() {
+		return getTipo() + " | " + getInformacionBase() + " | Ferocidad: "
+				+ ferocidad + " | Fase lunar: " + faseLunar;
+	}
+
+	@Override
 	public String morder() {
 		return "El hombre lobo utiliza sus colmillos";
 	}
