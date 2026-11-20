@@ -78,6 +78,57 @@ public class Sistema {
 		return minijuegosJugados.contains(minijuego);
 	}
 
+	//retorna los monstruos que aun no se han usado
+	public ArrayList<Monstruo> obtenerMonstruosDisponibles() {
+		ArrayList<Monstruo> disponibles = new ArrayList<>();
+		for (int i = 0; i < monstruos.size(); i++) {
+			if (!monstruoUsado(monstruos.get(i))) {
+				disponibles.add(monstruos.get(i));
+			}
+		}
+		return disponibles;
+	}
+
+	public boolean hayMinijuegosPendientes() {
+		return minijuegosJugados.size() < minijuegos.size();
+	}
+
+	//busca el resultado de un minijuego dentro de la sesion
+	public ResultadoMinijuego buscarResultado(Minijuego minijuego) {
+		for (int i = 0; i < historial.size(); i++) {
+			if (historial.get(i).getMinijuego() == minijuego) {
+				return historial.get(i);
+			}
+		}
+		return null;
+	}
+
+	public boolean habilidadEfectiva(Minijuego minijuego, String habilidad) {
+		return minijuego.getHabilidadPremiada().equalsIgnoreCase(habilidad);
+	}
+
+	//calcula y registra el resultado de un minijuego
+	public ResultadoMinijuego jugarMinijuego(Minijuego minijuego, Monstruo monstruo,
+			String habilidad) {
+		if (minijuego == null || monstruo == null || habilidad == null
+				|| minijuegoJugado(minijuego) || monstruoUsado(monstruo)) {
+			return null;
+		}
+		double potencial = minijuego.calcularPotencial(monstruo);
+		double multiplicador = 1.0;
+		if (habilidadEfectiva(minijuego, habilidad)) {
+			multiplicador = 1.5;
+		}
+		int puntaje = (int) Math.round(potencial * 10 * multiplicador);
+		ResultadoMinijuego resultado = new ResultadoMinijuego(minijuego, monstruo,
+				habilidad, puntaje);
+		historial.add(resultado);
+		minijuegosJugados.add(minijuego);
+		monstruosUsados.add(monstruo);
+		puntajeSesion += puntaje;
+		return resultado;
+	}
+
 	//retorna una copia de los jugadores ordenada por puntaje y nombre
 	public ArrayList<Jugador> obtenerRanking() {
 		ArrayList<Jugador> ranking = new ArrayList<>();

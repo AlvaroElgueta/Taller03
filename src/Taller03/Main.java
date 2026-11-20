@@ -64,7 +64,7 @@ public class Main {
 			int opcion = leerOpcion();
 			switch (opcion) {
 			case 1: {
-				System.out.println("La opcion de jugar se agregara en el siguiente avance\r\n");
+				jugarMinijuego();
 				break;
 			}
 			case 2: {
@@ -94,6 +94,156 @@ public class Main {
 			}
 			}
 		}
+	}
+
+	//se encarga del flujo para jugar un minijuego
+	private static void jugarMinijuego() {
+		if (!sistema.hayMinijuegosPendientes()) {
+			System.out.println("Ya se jugaron todos los minijuegos de esta sesion\r\n");
+			return;
+		}
+		Minijuego minijuego = seleccionarMinijuego();
+		if (minijuego == null) {
+			return;
+		}
+		ArrayList<Monstruo> disponibles = sistema.obtenerMonstruosDisponibles();
+		if (disponibles.isEmpty()) {
+			System.out.println("No quedan monstruos disponibles en esta sesion\r\n");
+			return;
+		}
+		Monstruo monstruo = seleccionarMonstruo(disponibles);
+		if (monstruo == null) {
+			return;
+		}
+
+		double potencial = minijuego.calcularPotencial(monstruo);
+		System.out.println("\r\nTe transformaste en " + monstruo.getTipo());
+		System.out.println(minijuego.getDescripcion());
+		System.out.println("Potencial: " + redondear(potencial));
+		String habilidad = seleccionarHabilidad(monstruo);
+		if (habilidad == null) {
+			return;
+		}
+
+		if (!habilidad.equalsIgnoreCase("Ninguna")) {
+			System.out.println(usarHabilidad(monstruo, habilidad));
+			if (sistema.habilidadEfectiva(minijuego, habilidad)) {
+				System.out.println("La habilidad fue efectiva. Multiplicador: 1.5");
+			} else {
+				System.out.println("La habilidad no tuvo efecto. Multiplicador: 1.0");
+			}
+		} else {
+			System.out.println("No se utilizo ninguna habilidad. Multiplicador: 1.0");
+		}
+
+		ResultadoMinijuego resultado = sistema.jugarMinijuego(minijuego, monstruo, habilidad);
+		if (resultado != null) {
+			System.out.println("Puntaje obtenido: " + resultado.getPuntaje() + " puntos\r\n");
+		}
+	}
+
+	//muestra los minijuegos y retorna el seleccionado
+	private static Minijuego seleccionarMinijuego() {
+		while (true) {
+			System.out.println("\r\n===== MINIJUEGOS =====");
+			for (int i = 0; i < sistema.getMinijuegos().size(); i++) {
+				Minijuego minijuego = sistema.getMinijuegos().get(i);
+				ResultadoMinijuego resultado = sistema.buscarResultado(minijuego);
+				String estado = "PENDIENTE";
+				if (resultado != null) {
+					estado = "JUGADO - " + resultado.getPuntaje() + " puntos";
+				}
+				System.out.println((i + 1) + ") " + minijuego.getNombre() + " [" + estado + "]");
+			}
+			System.out.println("0) Volver");
+			int opcion = leerOpcion();
+			if (opcion == 0) {
+				return null;
+			}
+			if (opcion >= 1 && opcion <= sistema.getMinijuegos().size()) {
+				Minijuego seleccionado = sistema.getMinijuegos().get(opcion - 1);
+				if (!sistema.minijuegoJugado(seleccionado)) {
+					return seleccionado;
+				}
+				System.out.println("Ese minijuego ya fue jugado en esta sesion");
+			} else {
+				System.out.println("Debe seleccionar un minijuego valido");
+			}
+		}
+	}
+
+	//muestra los monstruos disponibles y retorna el seleccionado
+	private static Monstruo seleccionarMonstruo(ArrayList<Monstruo> disponibles) {
+		while (true) {
+			System.out.println("\r\n===== MONSTRUOS DISPONIBLES =====");
+			for (int i = 0; i < disponibles.size(); i++) {
+				System.out.println((i + 1) + ") " + disponibles.get(i).getInformacion());
+			}
+			System.out.println("0) Volver");
+			int opcion = leerOpcion();
+			if (opcion == 0) {
+				return null;
+			}
+			if (opcion >= 1 && opcion <= disponibles.size()) {
+				return disponibles.get(opcion - 1);
+			}
+			System.out.println("Debe seleccionar un monstruo valido");
+		}
+	}
+
+	//muestra las habilidades y retorna la seleccionada
+	private static String seleccionarHabilidad(Monstruo monstruo) {
+		ArrayList<String> habilidades = new ArrayList<>();
+		if (monstruo instanceof Mordedor) {
+			habilidades.add("Morder");
+		}
+		if (monstruo instanceof Volador) {
+			habilidades.add("Volar");
+		}
+		if (monstruo instanceof Regenerable) {
+			habilidades.add("Regenerarse");
+		}
+		if (monstruo instanceof Furioso) {
+			habilidades.add("Enfurecerse");
+		}
+
+		while (true) {
+			System.out.println("\r\n===== HABILIDADES =====");
+			for (int i = 0; i < habilidades.size(); i++) {
+				System.out.println((i + 1) + ") " + habilidades.get(i));
+			}
+			System.out.println((habilidades.size() + 1) + ") No usar habilidad");
+			System.out.println("0) Volver");
+			int opcion = leerOpcion();
+			if (opcion == 0) {
+				return null;
+			}
+			if (opcion >= 1 && opcion <= habilidades.size()) {
+				return habilidades.get(opcion - 1);
+			}
+			if (opcion == habilidades.size() + 1) {
+				return "Ninguna";
+			}
+			System.out.println("Debe seleccionar una habilidad valida");
+		}
+	}
+
+	//ejecuta el metodo de la interfaz seleccionada
+	private static String usarHabilidad(Monstruo monstruo, String habilidad) {
+		if (habilidad.equalsIgnoreCase("Morder")) {
+			return ((Mordedor) monstruo).morder();
+		} else if (habilidad.equalsIgnoreCase("Volar")) {
+			return ((Volador) monstruo).volar();
+		} else if (habilidad.equalsIgnoreCase("Regenerarse")) {
+			return ((Regenerable) monstruo).regenerarse();
+		} else if (habilidad.equalsIgnoreCase("Enfurecerse")) {
+			return ((Furioso) monstruo).enfurecerse();
+		}
+		return "";
+	}
+
+	private static double redondear(double numero) {
+		return Math.round(numero * 100.0) / 100.0;
 	}
 
 	//muestra todos los monstruos y su estado en la sesion
