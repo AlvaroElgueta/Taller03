@@ -3,8 +3,11 @@
 
 package Taller03;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -80,11 +83,11 @@ public class Main {
 				break;
 			}
 			case 5: {
-				System.out.println("Sesion terminada. Puntaje total: "
-						+ sistema.getPuntajeSesion() + " puntos.\r\n");
+				terminarSesion();
 				return true;
 			}
 			case 6: {
+				terminarSesion();
 				System.out.println("Hasta luego...");
 				return false;
 			}
@@ -93,6 +96,18 @@ public class Main {
 				break;
 			}
 			}
+		}
+	}
+
+	//termina la sesion y guarda los registros
+	private static void terminarSesion() {
+		System.out.println("Sesion terminada. Puntaje total: "
+				+ sistema.getPuntajeSesion() + " puntos.");
+		System.out.println(sistema.finalizarSesion());
+		if (guardarRegistros()) {
+			System.out.println("Registros guardados correctamente\r\n");
+		} else {
+			System.out.println("No se pudieron guardar los registros\r\n");
 		}
 	}
 
@@ -364,6 +379,22 @@ public class Main {
 			lector.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("No se encontro Registros.txt, se creara al guardar");
+		}
+	}
+
+	//reescribe el archivo con los records actuales
+	private static boolean guardarRegistros() {
+		try {
+			BufferedWriter escritor = new BufferedWriter(new FileWriter("Registros.txt"));
+			for (int i = 0; i < sistema.getJugadores().size(); i++) {
+				Jugador jugador = sistema.getJugadores().get(i);
+				escritor.write(jugador.getNombre() + ";" + jugador.getPuntajeMaximo());
+				escritor.newLine();
+			}
+			escritor.close();
+			return true;
+		} catch (IOException e) {
+			return false;
 		}
 	}
 }

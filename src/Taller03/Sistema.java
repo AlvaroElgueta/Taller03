@@ -56,6 +56,25 @@ public class Sistema {
 		return puntajeSesion;
 	}
 
+	//registra el puntaje obtenido al finalizar la sesion
+	public String finalizarSesion() {
+		if (historial.isEmpty()) {
+			return "No se jugaron minijuegos, por lo tanto no se modifico el record.";
+		}
+		if (jugadorActual == null) {
+			jugadorActual = new Jugador(nombreJugadorActual, puntajeSesion);
+			jugadores.add(jugadorActual);
+			return "Jugador registrado con " + puntajeSesion + " puntos.";
+		}
+		if (puntajeSesion > jugadorActual.getPuntajeMaximo()) {
+			int recordAnterior = jugadorActual.getPuntajeMaximo();
+			jugadorActual.setPuntajeMaximo(puntajeSesion);
+			return "Nuevo record: " + puntajeSesion + " puntos. Record anterior: "
+					+ recordAnterior + " puntos.";
+		}
+		return "No se supero el record de " + jugadorActual.getPuntajeMaximo() + " puntos.";
+	}
+
 	//inicia una sesion y reinicia sus datos
 	public boolean iniciarSesion(String nombre) {
 		if (nombre == null || nombre.trim().equalsIgnoreCase("") || nombre.contains(";")) {
