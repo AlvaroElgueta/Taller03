@@ -1,6 +1,5 @@
 package Taller03;
-//CATALINA FICA 21.779.663-6
-//AlVARO ELGUETA 
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
